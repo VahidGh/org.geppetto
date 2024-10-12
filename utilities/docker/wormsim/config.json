@@ -70,9 +70,9 @@
 			"name": "org.geppetto.testbackend",
 			"url": "https://github.com/openworm/org.geppetto.testbackend.git",
 			"auto_install": "no"
-		}
+		},
 
-    {
+    		{
 			"name": "org.wormsim.frontend",
 			"url": "https://github.com/openworm/org.wormsim.frontend.git",
 			"auto_install": "no"
