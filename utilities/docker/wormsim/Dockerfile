@@ -55,29 +55,29 @@ RUN cd $HOME/workspace/org.geppetto.frontend/src/main &&\
 RUN cd $HOME/workspace/org.geppetto.frontend/src/main/webapp &&\
   $HOME/copy.sh https://github.com/openworm/geppetto-client.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
 
+
+
+# Test: Adding wormsim v0.2.6 to check for possible incompatibilities
+COPY bower.json workspace/org.geppetto.frontend/src/main/webapp/js/
+RUN cd workspace/org.geppetto.frontend/src/main/webapp/js && bower install
+COPY components.js workspace/org.geppetto.frontend/src/main/webapp/js/
+
+RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
+
+RUN cd workspace/org.wormsim.frontend/utilities/ && sudo python applyWormSimTheme.py && sudo python deployWormSimComponents.py && sudo python deployWormSimData.py
+
+RUN cd $HOME/workspace/org.wormsim.frontend &&\
+  /bin/echo -e "\e[96mMaven install org.wormsim.frontend\e[0m" &&\
+  mvn -DskipTests --quiet install &&\
+  rm -rf src
+
+
+
 COPY --chown=1000:1000 GeppettoConfiguration.json $HOME/workspace/org.geppetto.frontend/src/main/webapp/
 RUN cd $HOME/workspace/org.geppetto.frontend &&\
   /bin/echo -e "\e[96mMaven install org.geppetto.frontend\e[0m" &&\
   mvn -Dhttps.protocols=TLSv1.2 -DcontextPath=/ -DuseSsl=true -DskipTests -Pmaster --quiet install &&\
   rm -rf src
-
-
-
-
-# Test: Adding wormsim v0.2.6 to check for possible incompatibilities
-# RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
-#   cd org.wormsim.frontend &&\
-#   /bin/echo -e "\e[96mMaven install org.wormsim.frontend\e[0m" &&\
-#   mvn -DskipTests --quiet install &&\
-#   rm -rf src
-
-# COPY bower.json workspace/org.geppetto.frontend/src/main/webapp/js/
-# RUN cd workspace/org.geppetto.frontend/src/main/webapp/js && bower install
-
-# COPY components.js workspace/org.geppetto.frontend/src/main/webapp/js/
-# RUN cd workspace/org.wormsim.frontend/utilities/ && sudo python applyWormSimTheme.py && sudo python deployWormSimComponents.py && sudo python deployWormSimData.py
-# COPY geppetto.plan workspace/org.geppetto
-
 
 
 WORKDIR $HOME
