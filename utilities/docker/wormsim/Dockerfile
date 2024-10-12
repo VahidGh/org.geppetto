@@ -58,6 +58,11 @@ RUN cd $HOME/workspace/org.geppetto.frontend/src/main/webapp &&\
 
 
 # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
+RUN apt-get update
+RUN apt-get install -y npm 
+RUN npm install -g bower
+RUN apt-get install -y python-is-python3
+
 COPY bower.json workspace/org.geppetto.frontend/src/main/webapp/js/
 RUN cd workspace/org.geppetto.frontend/src/main/webapp/js && bower install
 COPY components.js workspace/org.geppetto.frontend/src/main/webapp/js/
