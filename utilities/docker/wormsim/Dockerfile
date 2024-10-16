@@ -126,7 +126,8 @@ RUN cd workspace/org.geppetto.frontend/src/main/webapp/js && bower install
 COPY components.js workspace/org.geppetto.frontend/src/main/webapp/js/
 
 # RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
-RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git
+# RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git
+RUN copy.sh https://github.com/openworm/org.wormsim.frontend.git
 
 RUN cd workspace/org.wormsim.frontend/utilities/ && sudo python applyWormSimTheme.py && sudo python deployWormSimComponents.py && sudo python deployWormSimData.py
 
@@ -134,7 +135,6 @@ RUN cd $HOME/workspace/org.wormsim.frontend &&\
   /bin/echo -e "\e[96mMaven install org.wormsim.frontend\e[0m" &&\
   mvn -DskipTests --quiet install &&\
   rm -rf src
-
 
 COPY --chown=1000:1000 GeppettoConfiguration.json $HOME/workspace/org.geppetto.frontend/src/main/webapp/
 RUN cd $HOME/workspace/org.geppetto.frontend &&\
