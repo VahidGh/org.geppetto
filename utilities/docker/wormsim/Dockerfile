@@ -27,9 +27,9 @@ RUN apt-get -o Acquire::Check-Valid-Until=false -y --force-yes update &&\
   apt-get -o Acquire::Check-Valid-Until=false -y --force-yes upgrade &&\
   apt-get install --no-install-recommends npm -o Acquire::Check-Valid-Until=false -y --force-yes
 
+RUN npm config set ignore-scripts true
 RUN npm install -g bower
 RUN ln -s /usr/bin/nodejs /usr/bin/node
-
 RUN npm cache clean --force
   
 USER developer
@@ -105,6 +105,11 @@ RUN cd $HOME/workspace/org.wormsim.frontend &&\
   mvn -DskipTests --quiet install &&\
   rm -rf src
 
+USER root
+RUN npm cache clean --force
+USER developer
+
+WORKDIR $HOME/workspace
 COPY --chown=1000:1000 GeppettoConfiguration.json $HOME/workspace/org.geppetto.frontend/src/main/webapp/
 RUN cd $HOME/workspace/org.geppetto.frontend &&\
   /bin/echo -e "\e[96mMaven install org.geppetto.frontend\e[0m" &&\
@@ -112,7 +117,7 @@ RUN cd $HOME/workspace/org.geppetto.frontend &&\
   rm -rf src
 
 
-# WORKDIR $HOME
+WORKDIR $HOME
 RUN mkdir rm $SERVER_HOME/./repository/usr
 COPY --chown=1000:1000 geppetto.plan $HOME/workspace/org.geppetto/
 COPY --chown=1000:1000 config.json $HOME/workspace/org.geppetto/utilities/source_setup/
