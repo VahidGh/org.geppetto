@@ -66,16 +66,23 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.frontend.git "${targetBr
 
 # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
 USER root
-COPY sources.list /etc/apt/sources.list
-RUN rm /etc/apt/sources.list.d/jessie-backports.list
-# RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -qq -y sudo xvfb 
-RUN apt-get -o Acquire::Check-Valid-Until=false update 
+# COPY sources.list /etc/apt/sources.list
+# RUN rm /etc/apt/sources.list.d/jessie-backports.list
+# # RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -qq -y sudo xvfb 
+# RUN apt-get -o Acquire::Check-Valid-Until=false update 
+
+RUN apt-get -o Acquire::Check-Valid-Until=false -y update &&\
+  apt-get install software-properties-common -o Acquire::Check-Valid-Until=false -y &&\
+  add-apt-repository ppa:deadsnakes/ppa -y &&\
+  apt-get install -y --no-install-recommends npm python-is-python3
 
 # USER root
 # RUN apt-get update
-RUN apt-get install -y npm 
+# RUN apt-get install -y --no-install-recommends npm 
+# RUN apt-get install -y --no-install-recommends python-is-python3
 RUN npm install -g bower
-RUN apt-get install -y python-is-python3
+RUN rm -rf /var/lib/apt/lists/*
+  
 USER developer
 
 COPY bower.json workspace/org.geppetto.frontend/src/main/webapp/js/
