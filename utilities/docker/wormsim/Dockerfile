@@ -35,10 +35,10 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.model.neuroml.git "${tar
   rm -rf src
 
 # RUN ../copy.sh https://github.com/openworm/org.geppetto.model.nwb.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
-  cd org.geppetto.model.nwb &&\
-  /bin/echo -e "\e[96mMaven install org.geppetto.model.nwb\e[0m" &&\
-  mvn -DskipTests --quiet install &&\
-  rm -rf src
+  # cd org.geppetto.model.nwb &&\
+  # /bin/echo -e "\e[96mMaven install org.geppetto.model.nwb\e[0m" &&\
+  # mvn -DskipTests --quiet install &&\
+  # rm -rf src
 
 RUN ../copy.sh https://github.com/openworm/org.geppetto.simulation.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
   cd org.geppetto.simulation &&\
@@ -49,11 +49,11 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.simulation.git "${target
 RUN ../copy.sh https://github.com/openworm/org.geppetto.frontend.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
 
 # RUN cd $HOME/workspace/org.geppetto.frontend/src/main &&\
-  $HOME/copy.sh https://github.com/openworm/geppetto-application.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
-  mv geppetto-application webapp
+  # $HOME/copy.sh https://github.com/openworm/geppetto-application.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
+  # mv geppetto-application webapp
 
 # RUN cd $HOME/workspace/org.geppetto.frontend/src/main/webapp &&\
-  $HOME/copy.sh https://github.com/openworm/geppetto-client.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
+  # $HOME/copy.sh https://github.com/openworm/geppetto-client.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
 
 
 
