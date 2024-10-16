@@ -88,46 +88,13 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.frontend.git "${targetBr
 
 
 # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
-# USER root
-
-# RUN rm -rf /var/lib/apt/lists/*
-# RUN rm -rf /etc/apt/sources.list/*
-# RUN rm -rf /etc/apt/sources.list.d/*
-
-# COPY sources.list /etc/apt/sources.list
-# # RUN rm /etc/apt/sources.list.d/jessie-backports.list
-# # # RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -qq -y sudo xvfb 
-# # RUN apt-get -o Acquire::Check-Valid-Until=false update 
-
-# RUN apt-get -o Acquire::Check-Valid-Until=false -y --force-yes update &&\
-#   apt-get -o Acquire::Check-Valid-Until=false -y --force-yes upgrade &&\
-#   # add-apt-repository ppa:deadsnakes/ppa -y &&\
-#   # apt-get install --no-install-recommends npm python-is-python3 -o Acquire::Check-Valid-Until=false -y
-#   apt-get install --no-install-recommends npm -o Acquire::Check-Valid-Until=false -y --force-yes
-
-# # USER root
-# # RUN apt-get update
-# # RUN apt-get install -y --no-install-recommends npm 
-# # RUN apt-get install -y --no-install-recommends python-is-python3
-
-# # install node.js manually
-# # RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-# # # RUN source ~/.bashrc
-# # RUN nvm install 16.13.0
-
-# RUN npm install -g bower
-# # RUN rm -rf /var/lib/apt/lists/*
-  
-# USER developer
+# RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
+RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "master" "master" "master"
 
 WORKDIR $HOME
 COPY bower.json workspace/org.geppetto.frontend/src/main/webapp/js/
 RUN cd workspace/org.geppetto.frontend/src/main/webapp/js && bower install
 COPY components.js workspace/org.geppetto.frontend/src/main/webapp/js/
-
-# RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
-# RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git
-RUN copy.sh https://github.com/openworm/org.wormsim.frontend.git
 
 RUN cd workspace/org.wormsim.frontend/utilities/ && sudo python applyWormSimTheme.py && sudo python deployWormSimComponents.py && sudo python deployWormSimData.py
 
