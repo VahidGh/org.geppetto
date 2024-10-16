@@ -28,7 +28,7 @@ RUN apt-get -o Acquire::Check-Valid-Until=false -y --force-yes update &&\
   apt-get install --no-install-recommends npm -o Acquire::Check-Valid-Until=false -y --force-yes
 
 RUN npm install -g bower
-# RUN rm -rf /var/lib/apt/lists/*
+RUN ln -s /usr/bin/nodejs /usr/bin/node
   
 USER developer
 
