@@ -66,7 +66,11 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.frontend.git "${targetBr
 
 # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
 USER root
-# COPY sources.list /etc/apt/sources.list
+
+RUN rm -rf /var/lib/apt/lists/*
+RUN rm -rf /etc/apt/sources.list.d/*
+
+COPY sources.list /etc/apt/sources.list
 # RUN rm /etc/apt/sources.list.d/jessie-backports.list
 # # RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -qq -y sudo xvfb 
 # RUN apt-get -o Acquire::Check-Valid-Until=false update 
@@ -80,7 +84,7 @@ RUN apt-get -o Acquire::Check-Valid-Until=false -y update &&\
 # RUN apt-get install -y --no-install-recommends npm 
 # RUN apt-get install -y --no-install-recommends python-is-python3
 RUN npm install -g bower
-RUN rm -rf /var/lib/apt/lists/*
+# RUN rm -rf /var/lib/apt/lists/*
   
 USER developer
 
