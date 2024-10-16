@@ -77,7 +77,7 @@ COPY sources.list /etc/apt/sources.list
 # RUN apt-get -o Acquire::Check-Valid-Until=false update 
 
 RUN apt-get -o Acquire::Check-Valid-Until=false -y update &&\
-  apt-get -o Acquire::Check-Valid-Until=false -y upgrade &&\
+  apt-get -o Acquire::Check-Valid-Until=false -y --force-yes upgrade &&\
   # add-apt-repository ppa:deadsnakes/ppa -y &&\
   # apt-get install --no-install-recommends npm python-is-python3 -o Acquire::Check-Valid-Until=false -y
   apt-get install --no-install-recommends npm -o Acquire::Check-Valid-Until=false -y
