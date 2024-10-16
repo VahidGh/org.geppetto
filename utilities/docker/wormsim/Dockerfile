@@ -68,6 +68,7 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.frontend.git "${targetBr
 USER root
 
 RUN rm -rf /var/lib/apt/lists/*
+RUN rm -rf /etc/apt/sources.list/*
 RUN rm -rf /etc/apt/sources.list.d/*
 
 COPY sources.list /etc/apt/sources.list
