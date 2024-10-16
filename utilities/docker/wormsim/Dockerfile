@@ -67,23 +67,29 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.frontend.git "${targetBr
 # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
 USER root
 
-RUN rm -rf /var/lib/apt/lists/*
-RUN rm -rf /etc/apt/sources.list/*
-RUN rm -rf /etc/apt/sources.list.d/*
+# RUN rm -rf /var/lib/apt/lists/*
+# RUN rm -rf /etc/apt/sources.list/*
+# RUN rm -rf /etc/apt/sources.list.d/*
 
-COPY sources.list /etc/apt/sources.list
-# RUN rm /etc/apt/sources.list.d/jessie-backports.list
-# # RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -qq -y sudo xvfb 
-# RUN apt-get -o Acquire::Check-Valid-Until=false update 
+# COPY sources.list /etc/apt/sources.list
+# # RUN rm /etc/apt/sources.list.d/jessie-backports.list
+# # # RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -qq -y sudo xvfb 
+# # RUN apt-get -o Acquire::Check-Valid-Until=false update 
 
-RUN apt-get -o Acquire::Check-Valid-Until=false -y update &&\
-  # add-apt-repository ppa:deadsnakes/ppa -y &&\
-  apt-get install --no-install-recommends npm python-is-python3 -o Acquire::Check-Valid-Until=false -y
+# RUN apt-get -o Acquire::Check-Valid-Until=false -y update &&\
+#   # add-apt-repository ppa:deadsnakes/ppa -y &&\
+#   apt-get install --no-install-recommends npm python-is-python3 -o Acquire::Check-Valid-Until=false -y
 
 # USER root
 # RUN apt-get update
 # RUN apt-get install -y --no-install-recommends npm 
 # RUN apt-get install -y --no-install-recommends python-is-python3
+
+# install node.js manually
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+RUN source ~/.bashrc
+RUN nvm install 16.13.0
+
 RUN npm install -g bower
 # RUN rm -rf /var/lib/apt/lists/*
   
