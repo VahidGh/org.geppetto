@@ -31,7 +31,6 @@ RUN npm install -g bower
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 RUN npm cache clean --force
-RUN npm cache verify
   
 USER developer
 
