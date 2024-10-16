@@ -120,6 +120,7 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.frontend.git "${targetBr
   
 # USER developer
 
+WORKDIR $HOME
 COPY bower.json workspace/org.geppetto.frontend/src/main/webapp/js/
 RUN cd workspace/org.geppetto.frontend/src/main/webapp/js && bower install
 COPY components.js workspace/org.geppetto.frontend/src/main/webapp/js/
@@ -135,7 +136,6 @@ RUN cd $HOME/workspace/org.wormsim.frontend &&\
   rm -rf src
 
 
-
 COPY --chown=1000:1000 GeppettoConfiguration.json $HOME/workspace/org.geppetto.frontend/src/main/webapp/
 RUN cd $HOME/workspace/org.geppetto.frontend &&\
   /bin/echo -e "\e[96mMaven install org.geppetto.frontend\e[0m" &&\
@@ -143,7 +143,7 @@ RUN cd $HOME/workspace/org.geppetto.frontend &&\
   rm -rf src
 
 
-WORKDIR $HOME
+# WORKDIR $HOME
 RUN mkdir rm $SERVER_HOME/./repository/usr
 COPY --chown=1000:1000 geppetto.plan $HOME/workspace/org.geppetto/
 COPY --chown=1000:1000 config.json $HOME/workspace/org.geppetto/utilities/source_setup/
