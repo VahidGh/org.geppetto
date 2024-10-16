@@ -72,9 +72,8 @@ USER root
 # RUN apt-get -o Acquire::Check-Valid-Until=false update 
 
 RUN apt-get -o Acquire::Check-Valid-Until=false -y update &&\
-  apt-get install software-properties-common -o Acquire::Check-Valid-Until=false -y &&\
-  add-apt-repository ppa:deadsnakes/ppa -y &&\
-  apt-get install -y --no-install-recommends npm python-is-python3
+  # add-apt-repository ppa:deadsnakes/ppa -y &&\
+  apt-get install --no-install-recommends npm python-is-python3 -o Acquire::Check-Valid-Until=false -y
 
 # USER root
 # RUN apt-get update
