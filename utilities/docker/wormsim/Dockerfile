@@ -98,6 +98,8 @@ COPY components.js workspace/org.geppetto.frontend/src/main/webapp/js/
 
 RUN cd workspace/org.wormsim.frontend/utilities/ && sudo python applyWormSimTheme.py && sudo python deployWormSimComponents.py && sudo python deployWormSimData.py
 
+RUN npm cache clean --force
+RUN npm cache verify
 RUN cd $HOME/workspace/org.wormsim.frontend &&\
   /bin/echo -e "\e[96mMaven install org.wormsim.frontend\e[0m" &&\
   mvn -DskipTests --quiet install &&\
