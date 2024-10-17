@@ -84,11 +84,11 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.model.neuroml.git "${tar
   rm -rf src
 
 # swc v0.2.6 mistakenly released as 0.2.6 in the repo
-RUN ../copy.sh https://github.com/openworm/org.geppetto.model.swc.git "0.2.6-alpha" "0.2.6-alpha" "0.2.6-alpha" &&\
-  cd org.geppetto.model.swc &&\
-  /bin/echo -e "\e[96mMaven install org.geppetto.model.swc\e[0m" &&\
-  mvn -DskipTests --quiet install &&\
-  rm -rf src
+# RUN ../copy.sh https://github.com/openworm/org.geppetto.model.swc.git "0.2.6-alpha" "0.2.6-alpha" "0.2.6-alpha" &&\
+#   cd org.geppetto.model.swc &&\
+#   /bin/echo -e "\e[96mMaven install org.geppetto.model.swc\e[0m" &&\
+#   mvn -DskipTests --quiet install &&\
+#   rm -rf src
 
 RUN ../copy.sh https://github.com/openworm/org.geppetto.model.nwb.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
   cd org.geppetto.model.nwb &&\
