@@ -52,12 +52,12 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.simulation.git "${target
 
 RUN ../copy.sh https://github.com/openworm/org.geppetto.frontend.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
 
-RUN cd $HOME/workspace/org.geppetto.frontend/src/main &&\
-  $HOME/copy.sh https://github.com/openworm/geppetto-application.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
-  mv geppetto-application webapp
+# RUN cd $HOME/workspace/org.geppetto.frontend/src/main &&\
+#   $HOME/copy.sh https://github.com/openworm/geppetto-application.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
+#   mv geppetto-application webapp
 
-RUN cd $HOME/workspace/org.geppetto.frontend/src/main/webapp &&\
-  $HOME/copy.sh https://github.com/openworm/geppetto-client.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
+# RUN cd $HOME/workspace/org.geppetto.frontend/src/main/webapp &&\
+#   $HOME/copy.sh https://github.com/openworm/geppetto-client.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
 
 COPY --chown=1000:1000 GeppettoConfiguration.json $HOME/workspace/org.geppetto.frontend/src/main/webapp/
 RUN cd $HOME/workspace/org.geppetto.frontend &&\
