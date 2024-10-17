@@ -111,6 +111,12 @@ RUN cd $HOME/workspace/org.geppetto.frontend/src/main &&\
 RUN cd $HOME/workspace/org.geppetto.frontend/src/main/webapp &&\
   $HOME/copy.sh https://github.com/openworm/geppetto-client.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
 
+COPY --chown=1000:1000 GeppettoConfiguration.json $HOME/workspace/org.geppetto.frontend/src/main/webapp/
+RUN cd $HOME/workspace/org.geppetto.frontend &&\
+  /bin/echo -e "\e[96mMaven install org.geppetto.frontend\e[0m" &&\
+  mvn -Dhttps.protocols=TLSv1.2 -DcontextPath=/ -DuseSsl=true -DskipTests -Pmaster --quiet install &&\
+  rm -rf src
+
 
 
 # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
@@ -134,12 +140,12 @@ RUN npm cache clean --force
 USER developer
 
 
-WORKDIR $HOME/workspace
-COPY --chown=1000:1000 GeppettoConfiguration.json $HOME/workspace/org.geppetto.frontend/src/main/webapp/
-RUN cd $HOME/workspace/org.geppetto.frontend &&\
-  /bin/echo -e "\e[96mMaven install org.geppetto.frontend\e[0m" &&\
-  mvn -Dhttps.protocols=TLSv1.2 -DcontextPath=/ -DuseSsl=true -DskipTests -Pmaster --quiet install &&\
-  rm -rf src
+# WORKDIR $HOME/workspace
+# COPY --chown=1000:1000 GeppettoConfiguration.json $HOME/workspace/org.geppetto.frontend/src/main/webapp/
+# RUN cd $HOME/workspace/org.geppetto.frontend &&\
+#   /bin/echo -e "\e[96mMaven install org.geppetto.frontend\e[0m" &&\
+#   mvn -Dhttps.protocols=TLSv1.2 -DcontextPath=/ -DuseSsl=true -DskipTests -Pmaster --quiet install &&\
+#   rm -rf src
 
 
 WORKDIR $HOME
