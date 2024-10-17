@@ -2,9 +2,13 @@ FROM metacell/java-virgo-maven:development
 
 LABEL maintainer="Facundo Rodriguez <facundo@metacell.us>"
 
-ARG targetBranch=development
-ARG originBranch=development
-ARG defaultBranch=development
+# ARG targetBranch=development
+# ARG originBranch=development
+# ARG defaultBranch=development
+
+ARG targetBranch=v0.4.2-alpha
+ARG originBranch=v0.4.2-alpha
+ARG defaultBranch=v0.4.2-alpha
 
 RUN /bin/echo -e "\e[1;35mORIGIN BRANCH ------------ $originBranch\e[0m" &&\
   /bin/echo -e "\e[1;35mTARGET BRANCH ------------ $targetBranch\e[0m" &&\
