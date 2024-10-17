@@ -18,45 +18,24 @@ RUN /bin/echo -e "\e[1;35mORIGIN BRANCH ------------ $originBranch\e[0m" &&\
   /bin/echo -e "\e[1;35mTARGET BRANCH ------------ $targetBranch\e[0m" &&\
   /bin/echo -e "\e[1;35mDEFAULT BRANCH ------------ $defaultBranch\e[0m" 
 
-# TODO: use mvn instead of npm bower
-# <!-- Install Bower via npm -->
-# <execution>
-#   <id>install bower</id>
-#   <goals>
-#     <goal>npm</goal>
-#   </goals>
-#   <configuration>
-#     <arguments>install bower -g</arguments>
-#   </configuration>
-# </execution>
-
-# <!-- Run Bower install (optional) -->
-# <execution>
-#   <id>bower install</id>
-#   <goals>
-#     <goal>bower</goal>
-#   </goals>
-# </execution>
-# </executions>
-
 # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
-USER root
+# USER root
 
-RUN rm -rf /var/lib/apt/lists/*
-RUN rm -rf /etc/apt/sources.list/*
-RUN rm -rf /etc/apt/sources.list.d/*
+# RUN rm -rf /var/lib/apt/lists/*
+# RUN rm -rf /etc/apt/sources.list/*
+# RUN rm -rf /etc/apt/sources.list.d/*
 
-COPY sources.list /etc/apt/sources.list
+# COPY sources.list /etc/apt/sources.list
 
-RUN apt-get -o Acquire::Check-Valid-Until=false -y --force-yes update &&\
-  apt-get -o Acquire::Check-Valid-Until=false -y --force-yes upgrade &&\
-  apt-get install --no-install-recommends npm -o Acquire::Check-Valid-Until=false -y --force-yes
+# RUN apt-get -o Acquire::Check-Valid-Until=false -y --force-yes update &&\
+#   apt-get -o Acquire::Check-Valid-Until=false -y --force-yes upgrade &&\
+#   apt-get install --no-install-recommends npm -o Acquire::Check-Valid-Until=false -y --force-yes
 
-RUN npm install -g bower
-RUN ln -s /usr/bin/nodejs /usr/bin/node
-RUN npm cache clean --force
+# RUN npm install -g bower
+# RUN ln -s /usr/bin/nodejs /usr/bin/node
+# RUN npm cache clean --force
   
-USER developer
+# USER developer
 
   
 # get geppetto
@@ -111,11 +90,11 @@ RUN cd $HOME/workspace/org.geppetto.frontend/src/main &&\
 RUN cd $HOME/workspace/org.geppetto.frontend/src/main/webapp &&\
   $HOME/copy.sh https://github.com/openworm/geppetto-client.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
 
-COPY --chown=1000:1000 GeppettoConfiguration.json $HOME/workspace/org.geppetto.frontend/src/main/webapp/
-RUN cd $HOME/workspace/org.geppetto.frontend &&\
-  /bin/echo -e "\e[96mMaven install org.geppetto.frontend\e[0m" &&\
-  mvn -Dhttps.protocols=TLSv1.2 -DcontextPath=/ -DuseSsl=true -DskipTests -Pmaster --quiet install &&\
-  rm -rf src
+# COPY --chown=1000:1000 GeppettoConfiguration.json $HOME/workspace/org.geppetto.frontend/src/main/webapp/
+# RUN cd $HOME/workspace/org.geppetto.frontend &&\
+#   /bin/echo -e "\e[96mMaven install org.geppetto.frontend\e[0m" &&\
+#   mvn -Dhttps.protocols=TLSv1.2 -DcontextPath=/ -DuseSsl=true -DskipTests -Pmaster --quiet install &&\
+#   rm -rf src
 
 
 
@@ -124,32 +103,38 @@ RUN cd $HOME/workspace/org.geppetto.frontend &&\
 RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "master" "master" "master"
 
 WORKDIR $HOME
+# TODO: [ERROR] Failed to execute goal on project frontend: Could not resolve dependencies for project org.wormsim:frontend:war:0.2.6: Could not find artifact org.geppetto:core:jar:0.2.6 in org.geppetto-mvn-repo
+RUN cd $HOME/workspace/org.wormsim.frontend &&\
+  /bin/echo -e "\e[96mMaven install org.wormsim.frontend\e[0m" &&\
+  mvn -DskipTests --quiet install &&\
+  rm -rf src
+  
 COPY bower.json workspace/org.geppetto.frontend/src/main/webapp/js/
 
+# TODO: Since bower is a user command, there is no need to execute it with superuser permissions.
+#       If you're having permission errors when using bower without sudo, please spend a few minutes learning more about how your system should work and make any necessary repairs.
+#       You can however run a command with sudo using "--allow-root" option.
 USER root
 RUN cd workspace/org.geppetto.frontend/src/main/webapp/js && bower install
 USER developer
 
 COPY components.js workspace/org.geppetto.frontend/src/main/webapp/js/
 
+# TODO [Warn]: sed: can't read ../../org.geppetto.frontend/src/main/webapp/less/main.less: No such file or directory
 RUN cd workspace/org.wormsim.frontend/utilities/ && sudo python applyWormSimTheme.py && sudo python deployWormSimComponents.py && sudo python deployWormSimData.py
 
-RUN cd $HOME/workspace/org.wormsim.frontend &&\
-  /bin/echo -e "\e[96mMaven install org.wormsim.frontend\e[0m" &&\
-  mvn -DskipTests --quiet install &&\
+
+# USER root
+# RUN npm cache clean --force
+# USER developer
+
+
+WORKDIR $HOME/workspace
+COPY --chown=1000:1000 GeppettoConfiguration.json $HOME/workspace/org.geppetto.frontend/src/main/webapp/
+RUN cd $HOME/workspace/org.geppetto.frontend &&\
+  /bin/echo -e "\e[96mMaven install org.geppetto.frontend\e[0m" &&\
+  mvn -Dhttps.protocols=TLSv1.2 -DcontextPath=/ -DuseSsl=true -DskipTests -Pmaster --quiet install &&\
   rm -rf src
-
-USER root
-RUN npm cache clean --force
-USER developer
-
-
-# WORKDIR $HOME/workspace
-# COPY --chown=1000:1000 GeppettoConfiguration.json $HOME/workspace/org.geppetto.frontend/src/main/webapp/
-# RUN cd $HOME/workspace/org.geppetto.frontend &&\
-#   /bin/echo -e "\e[96mMaven install org.geppetto.frontend\e[0m" &&\
-#   mvn -Dhttps.protocols=TLSv1.2 -DcontextPath=/ -DuseSsl=true -DskipTests -Pmaster --quiet install &&\
-#   rm -rf src
 
 
 WORKDIR $HOME
