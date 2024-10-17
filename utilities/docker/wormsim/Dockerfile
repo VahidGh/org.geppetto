@@ -100,7 +100,8 @@ RUN cd $HOME/workspace/org.geppetto.frontend/src/main/webapp &&\
 
 # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
 # RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
-RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "master" "master" "master"
+# RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "master" "master" "master"
+RUN ../copy.sh https://github.com/vahidgh/org.wormsim.frontend.git "docker" "docker" "docker"
 
 WORKDIR $HOME
 # TODO: [ERROR] Failed to execute goal on project frontend: Could not resolve dependencies for project org.wormsim:frontend:war:0.2.6: Could not find artifact org.geppetto:core:jar:0.2.6 in org.geppetto-mvn-repo
