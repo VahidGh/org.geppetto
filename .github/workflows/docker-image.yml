@@ -15,5 +15,5 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      # run: docker build ./utilities/docker/livegeppetto/ --file ./utilities/docker/livegeppetto/Dockerfile --tag my-image-name:$(date +%s)
-      run: docker build ./utilities/docker/wormsim/ --file ./utilities/docker/wormsim/Dockerfile --tag wormsim:0.2.6
+      run: docker build ./utilities/docker/livegeppetto/ --file ./utilities/docker/livegeppetto/Dockerfile --tag livegeppetto:0.4.2
+      # run: docker build ./utilities/docker/wormsim/ --file ./utilities/docker/wormsim/Dockerfile --tag wormsim:0.2.6
