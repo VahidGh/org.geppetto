@@ -2,9 +2,13 @@ FROM metacell/java-virgo-maven:development
 
 LABEL maintainer="Facundo Rodriguez <facundo@metacell.us>"
 
-ARG targetBranch=v0.4.2-alpha
-ARG originBranch=v0.4.2-alpha
-ARG defaultBranch=v0.4.2-alpha
+ARG targetBranch=development
+ARG originBranch=development
+ARG defaultBranch=development
+
+# ARG targetBranch=v0.4.2-alpha
+# ARG originBranch=v0.4.2-alpha
+# ARG defaultBranch=v0.4.2-alpha
 
 # ARG targetBranch=v0.2.6-alpha
 # ARG originBranch=v0.2.6-alpha
@@ -66,11 +70,11 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.model.neuroml.git "${tar
 #   mvn -DskipTests --quiet install &&\
 #   rm -rf src
 
-# RUN ../copy.sh https://github.com/openworm/org.geppetto.model.nwb.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
-  # cd org.geppetto.model.nwb &&\
-  # /bin/echo -e "\e[96mMaven install org.geppetto.model.nwb\e[0m" &&\
-  # mvn -DskipTests --quiet install &&\
-  # rm -rf src
+RUN ../copy.sh https://github.com/openworm/org.geppetto.model.nwb.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
+  cd org.geppetto.model.nwb &&\
+  /bin/echo -e "\e[96mMaven install org.geppetto.model.nwb\e[0m" &&\
+  mvn -DskipTests --quiet install &&\
+  rm -rf src
 
 RUN ../copy.sh https://github.com/openworm/org.geppetto.simulation.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
   cd org.geppetto.simulation &&\
@@ -80,12 +84,12 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.simulation.git "${target
 
 RUN ../copy.sh https://github.com/openworm/org.geppetto.frontend.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
 
-# RUN cd $HOME/workspace/org.geppetto.frontend/src/main &&\
-  # $HOME/copy.sh https://github.com/openworm/geppetto-application.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
-  # mv geppetto-application webapp
+RUN cd $HOME/workspace/org.geppetto.frontend/src/main &&\
+  $HOME/copy.sh https://github.com/openworm/geppetto-application.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
+  mv geppetto-application webapp
 
-# RUN cd $HOME/workspace/org.geppetto.frontend/src/main/webapp &&\
-  # $HOME/copy.sh https://github.com/openworm/geppetto-client.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
+RUN cd $HOME/workspace/org.geppetto.frontend/src/main/webapp &&\
+  $HOME/copy.sh https://github.com/openworm/geppetto-client.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
 
 
 
