@@ -125,7 +125,11 @@ RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "master" "ma
 
 WORKDIR $HOME
 COPY bower.json workspace/org.geppetto.frontend/src/main/webapp/js/
+
+USER root
 RUN cd workspace/org.geppetto.frontend/src/main/webapp/js && bower install
+USER developer
+
 COPY components.js workspace/org.geppetto.frontend/src/main/webapp/js/
 
 RUN cd workspace/org.wormsim.frontend/utilities/ && sudo python applyWormSimTheme.py && sudo python deployWormSimComponents.py && sudo python deployWormSimData.py
