@@ -11,24 +11,24 @@ RUN /bin/echo -e "\e[1;35mORIGIN BRANCH ------------ $originBranch\e[0m" &&\
   /bin/echo -e "\e[1;35mDEFAULT BRANCH ------------ $defaultBranch\e[0m" 
 
 
-# Test: Adding wormsim v0.2.6 to check for possible incompatibilities
-USER root
+# # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
+# USER root
 
-RUN rm -rf /var/lib/apt/lists/*
-RUN rm -rf /etc/apt/sources.list/*
-RUN rm -rf /etc/apt/sources.list.d/*
+# RUN rm -rf /var/lib/apt/lists/*
+# RUN rm -rf /etc/apt/sources.list/*
+# RUN rm -rf /etc/apt/sources.list.d/*
 
-COPY sources.list /etc/apt/sources.list
+# COPY sources.list /etc/apt/sources.list
 
-RUN apt-get -o Acquire::Check-Valid-Until=false -y --force-yes update &&\
-  apt-get -o Acquire::Check-Valid-Until=false -y --force-yes upgrade &&\
-  apt-get install --no-install-recommends npm -o Acquire::Check-Valid-Until=false -y --force-yes
+# RUN apt-get -o Acquire::Check-Valid-Until=false -y --force-yes update &&\
+#   apt-get -o Acquire::Check-Valid-Until=false -y --force-yes upgrade &&\
+#   apt-get install --no-install-recommends npm -o Acquire::Check-Valid-Until=false -y --force-yes
 
-RUN npm install -g bower
-RUN ln -s /usr/bin/nodejs /usr/bin/node
-RUN npm cache clean --force
+# RUN npm install -g bower
+# RUN ln -s /usr/bin/nodejs /usr/bin/node
+# RUN npm cache clean --force
   
-USER developer
+# USER developer
 
   
 # get geppetto
@@ -55,12 +55,12 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.model.neuroml.git "${tar
   mvn -DskipTests --quiet install &&\
   rm -rf src
 
-# swc v0.2.6 mistakenly released as 0.2.6 in the repo
-RUN ../copy.sh https://github.com/openworm/org.geppetto.model.swc.git "0.2.6-alpha" "0.2.6-alpha" "0.2.6-alpha" &&\
-  cd org.geppetto.model.swc &&\
-  /bin/echo -e "\e[96mMaven install org.geppetto.model.swc\e[0m" &&\
-  mvn -DskipTests --quiet install &&\
-  rm -rf src
+# # swc v0.2.6 mistakenly released as 0.2.6 in the repo
+# RUN ../copy.sh https://github.com/openworm/org.geppetto.model.swc.git "0.2.6-alpha" "0.2.6-alpha" "0.2.6-alpha" &&\
+#   cd org.geppetto.model.swc &&\
+#   /bin/echo -e "\e[96mMaven install org.geppetto.model.swc\e[0m" &&\
+#   mvn -DskipTests --quiet install &&\
+#   rm -rf src
 
 # RUN ../copy.sh https://github.com/openworm/org.geppetto.model.nwb.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
   # cd org.geppetto.model.nwb &&\
