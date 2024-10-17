@@ -18,25 +18,45 @@ RUN /bin/echo -e "\e[1;35mORIGIN BRANCH ------------ $originBranch\e[0m" &&\
   /bin/echo -e "\e[1;35mTARGET BRANCH ------------ $targetBranch\e[0m" &&\
   /bin/echo -e "\e[1;35mDEFAULT BRANCH ------------ $defaultBranch\e[0m" 
 
+# TODO: use mvn instead of npm bower
+# <!-- Install Bower via npm -->
+# <execution>
+#   <id>install bower</id>
+#   <goals>
+#     <goal>npm</goal>
+#   </goals>
+#   <configuration>
+#     <arguments>install bower -g</arguments>
+#   </configuration>
+# </execution>
 
-# # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
-# USER root
+# <!-- Run Bower install (optional) -->
+# <execution>
+#   <id>bower install</id>
+#   <goals>
+#     <goal>bower</goal>
+#   </goals>
+# </execution>
+# </executions>
 
-# RUN rm -rf /var/lib/apt/lists/*
-# RUN rm -rf /etc/apt/sources.list/*
-# RUN rm -rf /etc/apt/sources.list.d/*
+# Test: Adding wormsim v0.2.6 to check for possible incompatibilities
+USER root
 
-# COPY sources.list /etc/apt/sources.list
+RUN rm -rf /var/lib/apt/lists/*
+RUN rm -rf /etc/apt/sources.list/*
+RUN rm -rf /etc/apt/sources.list.d/*
 
-# RUN apt-get -o Acquire::Check-Valid-Until=false -y --force-yes update &&\
-#   apt-get -o Acquire::Check-Valid-Until=false -y --force-yes upgrade &&\
-#   apt-get install --no-install-recommends npm -o Acquire::Check-Valid-Until=false -y --force-yes
+COPY sources.list /etc/apt/sources.list
 
-# RUN npm install -g bower
-# RUN ln -s /usr/bin/nodejs /usr/bin/node
-# RUN npm cache clean --force
+RUN apt-get -o Acquire::Check-Valid-Until=false -y --force-yes update &&\
+  apt-get -o Acquire::Check-Valid-Until=false -y --force-yes upgrade &&\
+  apt-get install --no-install-recommends npm -o Acquire::Check-Valid-Until=false -y --force-yes
+
+RUN npm install -g bower
+RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN npm cache clean --force
   
-# USER developer
+USER developer
 
   
 # get geppetto
@@ -63,12 +83,12 @@ RUN ../copy.sh https://github.com/openworm/org.geppetto.model.neuroml.git "${tar
   mvn -DskipTests --quiet install &&\
   rm -rf src
 
-# # swc v0.2.6 mistakenly released as 0.2.6 in the repo
-# RUN ../copy.sh https://github.com/openworm/org.geppetto.model.swc.git "0.2.6-alpha" "0.2.6-alpha" "0.2.6-alpha" &&\
-#   cd org.geppetto.model.swc &&\
-#   /bin/echo -e "\e[96mMaven install org.geppetto.model.swc\e[0m" &&\
-#   mvn -DskipTests --quiet install &&\
-#   rm -rf src
+# swc v0.2.6 mistakenly released as 0.2.6 in the repo
+RUN ../copy.sh https://github.com/openworm/org.geppetto.model.swc.git "0.2.6-alpha" "0.2.6-alpha" "0.2.6-alpha" &&\
+  cd org.geppetto.model.swc &&\
+  /bin/echo -e "\e[96mMaven install org.geppetto.model.swc\e[0m" &&\
+  mvn -DskipTests --quiet install &&\
+  rm -rf src
 
 RUN ../copy.sh https://github.com/openworm/org.geppetto.model.nwb.git "${targetBranch}" "${originBranch}" "${defaultBranch}" &&\
   cd org.geppetto.model.nwb &&\
@@ -93,25 +113,25 @@ RUN cd $HOME/workspace/org.geppetto.frontend/src/main/webapp &&\
 
 
 
-# # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
-# # RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
-# RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "master" "master" "master"
+# Test: Adding wormsim v0.2.6 to check for possible incompatibilities
+# RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "${targetBranch}" "${originBranch}" "${defaultBranch}"
+RUN ../copy.sh https://github.com/openworm/org.wormsim.frontend.git "master" "master" "master"
 
-# WORKDIR $HOME
-# COPY bower.json workspace/org.geppetto.frontend/src/main/webapp/js/
-# RUN cd workspace/org.geppetto.frontend/src/main/webapp/js && bower install
-# COPY components.js workspace/org.geppetto.frontend/src/main/webapp/js/
+WORKDIR $HOME
+COPY bower.json workspace/org.geppetto.frontend/src/main/webapp/js/
+RUN cd workspace/org.geppetto.frontend/src/main/webapp/js && bower install
+COPY components.js workspace/org.geppetto.frontend/src/main/webapp/js/
 
-# RUN cd workspace/org.wormsim.frontend/utilities/ && sudo python applyWormSimTheme.py && sudo python deployWormSimComponents.py && sudo python deployWormSimData.py
+RUN cd workspace/org.wormsim.frontend/utilities/ && sudo python applyWormSimTheme.py && sudo python deployWormSimComponents.py && sudo python deployWormSimData.py
 
-# RUN cd $HOME/workspace/org.wormsim.frontend &&\
-#   /bin/echo -e "\e[96mMaven install org.wormsim.frontend\e[0m" &&\
-#   mvn -DskipTests --quiet install &&\
-#   rm -rf src
+RUN cd $HOME/workspace/org.wormsim.frontend &&\
+  /bin/echo -e "\e[96mMaven install org.wormsim.frontend\e[0m" &&\
+  mvn -DskipTests --quiet install &&\
+  rm -rf src
 
-# USER root
-# RUN npm cache clean --force
-# USER developer
+USER root
+RUN npm cache clean --force
+USER developer
 
 
 WORKDIR $HOME/workspace
