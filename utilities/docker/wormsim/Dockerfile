@@ -20,6 +20,10 @@ RUN /bin/echo -e "\e[1;35mORIGIN BRANCH ------------ $originBranch\e[0m" &&\
 
 
 # TODO: use this instead: src/main/webapp/node/node or npm
+# sudo src/main/webapp/node/node src/main/webapp/node/node_modules/npm/bin/npm-cli.js install -g bower
+# sudo ln -s /home/developer/workspace/org.geppetto.frontend/src/main/webapp/node/node /usr/bin/node
+# src/main/webapp/lib/node_modules/bower/bin/bower install
+
 
 # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
 # USER root
