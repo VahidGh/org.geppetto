@@ -18,6 +18,9 @@ RUN /bin/echo -e "\e[1;35mORIGIN BRANCH ------------ $originBranch\e[0m" &&\
   /bin/echo -e "\e[1;35mTARGET BRANCH ------------ $targetBranch\e[0m" &&\
   /bin/echo -e "\e[1;35mDEFAULT BRANCH ------------ $defaultBranch\e[0m" 
 
+
+# TODO: use this instead: src/main/webapp/node/node or npm
+
 # Test: Adding wormsim v0.2.6 to check for possible incompatibilities
 # USER root
 
